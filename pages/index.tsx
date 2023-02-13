@@ -11,7 +11,7 @@ import cloudinary from "../utils/cloudinary";
 import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
-import ogimage from "/public/og-image.png";
+// import ogimage from "/public/og-image.png";
 
 const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
   const router = useRouter();
@@ -32,8 +32,8 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
     <>
       <Head>
         <title>Tom Nyuma's Marching Band Archive</title>
-        <meta property="og:image" content={ogimage.src} />
-        <meta name="twitter:image" content={ogimage.src} />
+        {/* <meta property="og:image" content={ogimage.src} /> */}
+        {/* <meta name="twitter:image" content={ogimage.src} /> */}
       </Head>
       <main className="mx-auto max-w-[1960px] p-4">
         {photoId && (
