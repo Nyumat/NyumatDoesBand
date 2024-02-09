@@ -1,4 +1,4 @@
-import Document, { Head, Html, Main, NextScript } from 'next/document'
+import Document, { Head, Html, Main, NextScript } from "next/document";
 
 class MyDocument extends Document {
   render() {
@@ -15,9 +15,15 @@ class MyDocument extends Document {
             property="og:description"
             content="See pictures from Tom Nyuma's (Nyumat) Band Career."
           />
-          <meta property="og:title" content="Tom Nyuma's Marching Band Archive" />
+          <meta
+            property="og:title"
+            content="Tom Nyuma's Marching Band Archive"
+          />
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content="Tom Nyuma's Marching Band Archive" />
+          <meta
+            name="twitter:title"
+            content="Tom Nyuma's Marching Band Archive"
+          />
           <meta
             name="twitter:description"
             content="See pictures from Tom Nyuma's Band Career."
@@ -28,8 +34,8 @@ class MyDocument extends Document {
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 
-export default MyDocument
+export default MyDocument;

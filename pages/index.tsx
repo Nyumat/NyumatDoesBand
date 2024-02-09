@@ -5,10 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import Bridge from "../components/Icons/Bridge";
-import Logo from "../components/Icons/Logo";
 import Modal from "../components/Modal";
-import cloudinary from "../utils/cloudinary";
-import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
+// import cloudinary from "../utils/cloudinary";
 import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
 // import ogimage from "/public/og-image.png";
@@ -17,6 +15,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
   const router = useRouter();
   const { photoId } = router.query;
   const [lastViewedPhoto, setLastViewedPhoto] = useLastViewedPhoto();
+  const offline = true;
 
   const lastViewedPhotoRef = useRef<HTMLAnchorElement>(null);
 
@@ -27,6 +26,19 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
       setLastViewedPhoto(null);
     }
   }, [photoId, lastViewedPhoto, setLastViewedPhoto]);
+
+  if (offline) {
+    return (
+      <div className="mx-auto flex h-screen flex-col items-center justify-center gap-12 text-white">
+        <h1 className="max-w-2xl text-center text-4xl font-bold">
+          NyumatDoesBand is currently offline due to Cloudinary API rate limits.
+        </h1>
+        <p className="text-center text-2xl font-bold">
+          Please check back later.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -54,7 +66,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               {/* <span className="absolute left-0 right-0 bottom-0 h-[400px] bg-gradient-to-b from-black/0 via-black to-black"></span> */}
             </div>
             {/* <Logo /> */}
-            <h1 className="mt-8 mb-4 text-base font-bold uppercase tracking-widest">
+            <h1 className="mb-4 mt-8 text-base font-bold uppercase tracking-widest">
               Nyumat Does Band
             </h1>
             <p className="max-w-[40ch] text-white/75 sm:max-w-[32ch]">
@@ -119,38 +131,38 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
 
 export default Home;
 
-export async function getStaticProps() {
-  const results = await cloudinary.v2.search
-    .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
-    .sort_by("public_id", "desc")
-    .max_results(400)
-    .execute();
-  let reducedResults: ImageProps[] = [];
+// export async function getStaticProps() {
+//   const results = await cloudinary.v2.search
+//     .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
+//     .sort_by("public_id", "desc")
+//     .max_results(400)
+//     .execute();
+//   let reducedResults: ImageProps[] = [];
 
-  let i = 0;
-  for (let result of results.resources) {
-    reducedResults.push({
-      id: i,
-      height: result.height,
-      width: result.width,
-      public_id: result.public_id,
-      format: result.format,
-    });
-    i++;
-  }
+//   let i = 0;
+//   for (let result of results.resources) {
+//     reducedResults.push({
+//       id: i,
+//       height: result.height,
+//       width: result.width,
+//       public_id: result.public_id,
+//       format: result.format,
+//     });
+//     i++;
+//   }
 
-  const blurImagePromises = results.resources.map((image: ImageProps) => {
-    return getBase64ImageUrl(image);
-  });
-  const imagesWithBlurDataUrls = await Promise.all(blurImagePromises);
+//   const blurImagePromises = results.resources.map((image: ImageProps) => {
+//     return getBase64ImageUrl(image);
+//   });
+//   const imagesWithBlurDataUrls = await Promise.all(blurImagePromises);
 
-  for (let i = 0; i < reducedResults.length; i++) {
-    reducedResults[i].blurDataUrl = imagesWithBlurDataUrls[i];
-  }
+//   for (let i = 0; i < reducedResults.length; i++) {
+//     reducedResults[i].blurDataUrl = imagesWithBlurDataUrls[i];
+//   }
 
-  return {
-    props: {
-      images: reducedResults,
-    },
-  };
-}
+//   return {
+//     props: {
+//       images: reducedResults,
+//     },
+//   };
+// }
